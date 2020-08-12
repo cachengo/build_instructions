@@ -9,7 +9,7 @@ http://opensource.rock-chips.com/wiki_Board_Config
 	git clone git@github.com:cachengo/rootfs
 	git clone git@github.com:cachengo/u-boot
 	git clone git@github.com:cachengo/xen
-###Fox example the rk3288-evb Usage:
+### Fox example the rk3288-evb Usage:
 
 build kernel image:  (output : boot.img and out/kernel)
 
