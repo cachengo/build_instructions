@@ -1,51 +1,95 @@
-The build and update image usage as follows:
-Which config needed for us, pls refer to build/board_configs.sh or
-http://opensource.rock-chips.com/wiki_Board_Config
+# Rockchip Debian SDK
+    
+Below is the instructions of how to build image for ROCK960.
 
-### Clone Build repositories:
+## Requirement
+
+You need a type C to type A cable(USB 2.0 or USB 3.0) to flash ROCK960.
+
+## Get the source code
+
+You need repo to get multiple git repositories to build the image.
+
+Install repo if you don't have it.
+
+    mkdir ~/bin
+    PATH=~/bin:$PATH
+    curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+    chmod a+x ~/bin/repo
+
+sync the source code
 	git clone git@github.com:cachengo/buildroot
-	git clone git@github.com:cachengo/kernel
-	git clone git@github.com:cachengo/rkbin
-	git clone git@github.com:cachengo/rootfs
-	git clone git@github.com:cachengo/u-boot
-	git clone git@github.com:cachengo/xen
-	git clone git@github.com:rockchip-linux/rk-rootfs-build.git
-### Fox example the rk3288-evb Usage:
+        git clone git@github.com:cachengo/kernel
+        git clone git@github.com:cachengo/rkbin
+        git clone git@github.com:cachengo/rootfs
+        git clone git@github.com:cachengo/u-boot
+        git clone git@github.com:cachengo/xen
+	git clone git@github.com:cachengo/build
+        git clone git@github.com:rockchip-linux/rk-rootfs-build.git
 
-build kernel image:  (output : boot.img and out/kernel)
+You will get 
 
-	build/mk-kernel.sh zaku-evb
-    
-build u-boot image:  (output : out/u-boot)
+    build  kernel  README.md  rkbin  rootfs  u-boot
 
-	build/mk-uboot.sh zaku-evb
-    
-build rootfs image:
+## Install toolchain and other build tools
 
-	follow readme in rk-rootfs-build
+    sudo apt-get install gcc-aarch64-linux-gnu device-tree-compiler libncurses5 libncurses5-dev build-essential libssl-dev
 
-build one system image:  (output : system.img)
+## Build u-boot
 
-	build/mk-image.sh -c zaku -t system -r rk-rootfs-build/linaro-rootfs.img
+    ./build/mk-uboot.sh rock960ab     #For model A and mode B
+    ./build/mk-uboot.sh rock960c      #For model C
 
-update image: 
+The generated images will be copied to out/u-boot folder
 
-	eMMC: build/flash_tool.sh   -c rk3288 -p system  -i  out/system.img
-	sdcard: build/flash_tool.sh -c rk3288  -d /dev/sdb -p system  -i  out/system.img 
-	rockusb: build/flash_tool.sh -p system  -i  out/system.img 
+    ls out/u-boot/
+    idbloader.img  rk3399_loader_v1.08.106.bin  trust.img  uboot.img
 
-### Debian package
+## Build kernel
 
-To pack the firmware in the deb package:  (output : out/debian)
+    ./build/mk-kernel.sh rock960ab    #For model A and mode B
+    ./build/mk-kernel.sh rock960c     #For model C
 
-	build/pack_deb.sh -c zaku -d /dev/mmcblk0(mmc index in target device, not host) (-r rk-rootfs-build/linaro-rootfs.img)
+You will get the kernel image and dtb file
 
-Tthe debs could be installed in the board by the following command.   
+    ls out/kernel/
+    Image  rock960-model-ab-linux.dtb rock960-model-c-linux.dtb
 
-	sudo dpkg -i u-boot-rockchip_1.0_all.deb
-	sudo dpkg -i kernel-rockchip_1.0_all.deb
+## Make rootfs image
 
-### Tips
-* You must boot into [maskrom](http://opensource.rock-chips.com/wiki_Rockusb#Maskrom_mode) to flash the eMMC. Booting into [rkusb](http://opensource.rock-chips.com/wiki_Rockusb#Miniloader_Rockusb.C2.A0mode) mode will not work.
-  * An easy way to enter maskrom is by erasing the eMMC and rebooting.
-* Provide the chip name for `-c` parameters, _not_ the board name! (e.g. rk3288 instead of zaku-evb).
+Building a base debian system by ubuntu-build-service from linaro.
+
+    sudo apt-get install binfmt-support qemu-user-static
+    sudo dpkg -i ubuntu-build-service/packages/*        # ignore the broken dependencies, we will fix it next step
+    sudo apt-get install -f
+    RELEASE=stretch TARGET=desktop ARCH=armhf ./mk-base-debian.sh
+
+This will bootstrap a Debian stretch image, you will get a rootfs tarball named `linaro-stretch-alip-xxxx.tar.gz`. 
+
+Building the rk-debain rootfs with debug:
+
+    VERSION=debug ARCH=armhf ./mk-rootfs-stretch.sh  && ./mk-image.sh
+
+This will install Rockchip specified packages and hooks on the standard Debian rootfs and generate an ext4 format rootfs image at `rootfs/linaro-rootfs.img` .
+
+## Combine everything into one image
+
+    build/mk-image.sh -c rk3399 -t system -r rootfs/linaro-rootfs.img
+
+This will combine u-boot, kernel and rootfs into one image and generate GPT partition table. Output is 
+
+    out/system.img
+
+## Flash the image
+
+Follow instuctions [here](https://www.96boards.org/documentation/consumer/rock/rock960/installation/).
+
+## Troubleshooting
+
+### Can not go to maskrom mode
+
+1. Press and hold maskrom key longer, and short press and release reset.
+2. Check your usb cable, plug and unplug the usb cable, reverse plug the type C port and try
+3. On the host PC, lsusb should show the following VID/PID if the board is in maskrom mode:
+
+    Bus 003 Device 061: **ID 2207:0011**
