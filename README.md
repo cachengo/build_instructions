@@ -17,15 +17,16 @@ Install repo if you don't have it.
     curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
     chmod a+x ~/bin/repo
 
-sync the source code
-	git clone git@github.com:cachengo/buildroot
-        git clone git@github.com:cachengo/kernel
-        git clone git@github.com:cachengo/rkbin
-        git clone git@github.com:cachengo/rootfs
-        git clone git@github.com:cachengo/u-boot
-        git clone git@github.com:cachengo/xen
-	git clone git@github.com:cachengo/build
-        git clone git@github.com:rockchip-linux/rk-rootfs-build.git
+Clone the repos:
+
+    git clone git@github.com:cachengo/buildroot
+    git clone git@github.com:cachengo/kernel
+    git clone git@github.com:cachengo/rkbin
+    git clone git@github.com:cachengo/rootfs
+    git clone git@github.com:cachengo/u-boot
+    git clone git@github.com:cachengo/xen
+    git clone git@github.com:cachengo/build
+    git clone git@github.com:rockchip-linux/rk-rootfs-build.git
 
 You will get 
 
