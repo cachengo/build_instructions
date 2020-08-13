@@ -9,6 +9,7 @@ http://opensource.rock-chips.com/wiki_Board_Config
 	git clone git@github.com:cachengo/rootfs
 	git clone git@github.com:cachengo/u-boot
 	git clone git@github.com:cachengo/xen
+	git clone git@github.com:rockchip-linux/rk-rootfs-build.git
 ### Fox example the rk3288-evb Usage:
 
 build kernel image:  (output : boot.img and out/kernel)
