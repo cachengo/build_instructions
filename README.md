@@ -48,6 +48,7 @@ You will get the kernel image and dtb file
 
 Building a base debian system by ubuntu-build-service from linaro.
 
+    cd rootfs
     sudo apt-get install binfmt-support qemu-user-static
     sudo dpkg -i ubuntu-build-service/packages/*        # ignore the broken dependencies, we will fix it next step
     sudo apt-get install -f
@@ -57,7 +58,7 @@ This will bootstrap a Debian stretch image, you will get a rootfs tarball named 
 
 Building the rk-debain rootfs with debug:
 
-    VERSION=debug ARCH=armhf cd rootfs && ./mk-rootfs-stretch.sh  && ./mk-image.sh
+    VERSION=debug ARCH=armhf ./mk-rootfs-stretch.sh  && ./mk-image.sh
 
 This will install Rockchip specified packages and hooks on the standard Debian rootfs and generate an ext4 format rootfs image at `rootfs/linaro-rootfs.img` .
 
