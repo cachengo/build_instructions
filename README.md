@@ -4,42 +4,30 @@ Below is the instructions of how to build image for ROCK960.
 
 ## Requirement
 
-You need a type C to type A cable(USB 2.0 or USB 3.0) to flash ROCK960.
+Ubuntu x86_64
 
 ## Get the source code
 
-You need repo to get multiple git repositories to build the image.
-
-Install repo if you don't have it.
-
-    mkdir ~/bin
-    PATH=~/bin:$PATH
-    curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-    chmod a+x ~/bin/repo
-
 Clone the repos:
 
-    git clone git@github.com:cachengo/buildroot
-    git clone git@github.com:cachengo/kernel
+    git clone -b release-4.4-zaku git@github.com:cachengo/kernel
     git clone git@github.com:cachengo/rkbin
-    git clone git@github.com:cachengo/rootfs
-    git clone git@github.com:cachengo/u-boot
-    git clone git@github.com:cachengo/xen
+    git clone -b rk3399-pie-zaku git@github.com:cachengo/u-boot
     git clone git@github.com:cachengo/build
-    git clone git@github.com:rockchip-linux/rk-rootfs-build.git
+    git clone git@github.com:rockchip-linux/rk-rootfs-build.git rootfs
 
 You will get 
 
-    build  kernel  README.md  rkbin  rootfs  u-boot
+    build  kernel rkbin rootfs  u-boot
 
 ## Install toolchain and other build tools
 
-    sudo apt-get install gcc-aarch64-linux-gnu device-tree-compiler libncurses5 libncurses5-dev build-essential libssl-dev
+    sudo apt-get install gcc-aarch64-linux-gnu device-tree-compiler libncurses5 libncurses5-dev build-essential libssl-dev mtools
 
 ## Build u-boot
 
-    ./build/mk-uboot.sh rock960ab     #For model A and mode B
-    ./build/mk-uboot.sh rock960c      #For model C
+    ./build/mk-uboot.sh zaku     #For model A and mode B
+    ./build/mk-uboot.sh zaku      #For model C
 
 The generated images will be copied to out/u-boot folder
 
@@ -48,8 +36,8 @@ The generated images will be copied to out/u-boot folder
 
 ## Build kernel
 
-    ./build/mk-kernel.sh rock960ab    #For model A and mode B
-    ./build/mk-kernel.sh rock960c     #For model C
+    ./build/mk-kernel.sh zaku    #For model A and mode B
+    ./build/mk-kernel.sh zaku     #For model C
 
 You will get the kernel image and dtb file
 
@@ -80,10 +68,6 @@ This will install Rockchip specified packages and hooks on the standard Debian r
 This will combine u-boot, kernel and rootfs into one image and generate GPT partition table. Output is 
 
     out/system.img
-
-## Flash the image
-
-Follow instuctions [here](https://www.96boards.org/documentation/consumer/rock/rock960/installation/).
 
 ## Troubleshooting
 
