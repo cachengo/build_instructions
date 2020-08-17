@@ -1,6 +1,6 @@
 # Rockchip Debian SDK
     
-Below is the instructions of how to build image for ROCK960.
+Below are the instructions for how to build image for ROCK960.
 
 ## Requirement
 
@@ -26,8 +26,7 @@ You will get
 
 ## Build u-boot
 
-    ./build/mk-uboot.sh zaku     #For model A and mode B
-    ./build/mk-uboot.sh zaku      #For model C
+    ./build/mk-uboot.sh zaku
 
 The generated images will be copied to out/u-boot folder
 
@@ -36,8 +35,7 @@ The generated images will be copied to out/u-boot folder
 
 ## Build kernel
 
-    ./build/mk-kernel.sh zaku    #For model A and mode B
-    ./build/mk-kernel.sh zaku     #For model C
+    ./build/mk-kernel.sh zaku
 
 You will get the kernel image and dtb file
 
@@ -63,19 +61,10 @@ Building the rk-debain rootfs with debug:
 This will install Rockchip specified packages and hooks on the standard Debian rootfs and generate an ext4 format rootfs image at `rootfs/linaro-rootfs.img` .
 
 ## Combine everything into one image
-
+    cd ..
     build/mk-image.sh -c rk3399 -t system -r rootfs/linaro-rootfs.img
 
 This will combine u-boot, kernel and rootfs into one image and generate GPT partition table. Output is 
 
     out/system.img
 
-## Troubleshooting
-
-### Can not go to maskrom mode
-
-1. Press and hold maskrom key longer, and short press and release reset.
-2. Check your usb cable, plug and unplug the usb cable, reverse plug the type C port and try
-3. On the host PC, lsusb should show the following VID/PID if the board is in maskrom mode:
-
-    Bus 003 Device 061: **ID 2207:0011**
