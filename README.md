@@ -1,6 +1,6 @@
 # Build for RK3399 ZAKU board
 
-Recommended build host is Ubuntu 16.04 64-bit(amd64).
+Recommended build host is Ubuntu 18.04 64-bit(amd64).
 
 ## Build environment setup
 
