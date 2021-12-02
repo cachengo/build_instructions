@@ -2,7 +2,7 @@
 
 Recommended build host is Ubuntu 18.04 64-bit(amd64).
 
-## Build environment setup
+## Build environment setup - Linux
 
 ### Get the source code
 
@@ -92,6 +92,6 @@ The generated images will be copied to out/u-boot directory.
 
 ### Flash Image to NVMe ssd
 
-1. Format NVMe ssd
+1. Format NVMe ssd as ext4
 2. Flash rk3399-zaku-ubuntu-bionic-server-arm64.img to ssd
 3. Confirm that zaku boots with ssd
