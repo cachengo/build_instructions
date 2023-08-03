@@ -23,7 +23,7 @@ You will get
   wget https://releases.linaro.org/components/toolchain/binaries/7.3-2018.05/aarch64-linux-gnu/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz
   sudo tar xvf gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz  -C /usr/local/
   sudo apt-get install gcc-aarch64-linux-gnu device-tree-compiler libncurses5 libncurses5-dev build-essential libssl-dev mtools bison flex -y
-  sudo apt-get install bc python dosfstools -y
+  sudo apt-get install bc python dosfstools u-boot-tools -y
   sudo apt-get install ruby-dev -y
   sudo gem install fpm
 </pre>
